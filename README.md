@@ -20,7 +20,7 @@ Edit [src/config/site.ts](src/config/site.ts). Save and refresh the page to see 
 - **Profile** — Edit `name`, `username`, `bio`, and `tagline` in `profile`.
 - **Profile photo** — The site uses `public/images/sara-profile.webp`. To replace it, update the file or set `profile.photoPath` to a new public image path. Adjust `profile.photoPosition` to frame the face. If the file is missing, the profile displays initials.
 - **Pilates photo** — The site uses `public/images/sara-pilates.webp`. To replace it, update the file or set `editorial.photoPath` to a new public image path. The full image fits inside the editorial frame, with the caption below it. If the file is missing, the caption appears on its own. The WebP versions are sized for the page and the original PNGs are retained.
-- **Socials** — Add your full Instagram and TikTok URLs and use `mailto:` followed by your address for email. The matching cards in `mainLinks` use these same destinations.
+- **Socials** — Set your Instagram and TikTok URLs in `socials`. Update `businessEmail` with the plain address shown in the Business Inquiries card.
 - **Main links** — Add an item with a unique `id`, a `title`, an HTTPS `href`, and `enabled: true`. You can also add a `description`, an `icon` from `IconName`, or `featured: true`. Move entries up or down in the array to reorder them. Remove an entry or set `enabled: false` to hide it.
 - **Prozis** — Find `id: "prozis-shop"` in `mainLinks`, paste the approved HTTPS shopping URL into `href`, and set `enabled: true`. Keep `featured: true` for the charcoal styling. Rebuild to update the static site.
 - **Collaborations** — Replace or duplicate the disabled example in `collaborations` with a real title, URL, and unique ID. Enable the entry when it is ready.

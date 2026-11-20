@@ -2,7 +2,7 @@ import { EditorialPhoto } from "@/src/components/EditorialPhoto";
 import { DiscountSection } from "@/src/components/DiscountSection";
 import { hasDestination, isWebUrl, LinksList, SocialLinks } from "@/src/components/Links";
 import { ProfileHeader } from "@/src/components/ProfileHeader";
-import { site, type LinkEntry } from "@/src/config/site";
+import { site, type ContactEntry, type LinkEntry } from "@/src/config/site";
 
 export default function Home() {
   const socials = Object.values(site.socials).filter(hasDestination);
@@ -12,14 +12,19 @@ export default function Home() {
   );
   const sections = { collaborations, discounts };
 
-  const mainLinks = site.mainLinks.flatMap<LinkEntry>((entry) => {
+  const email = site.businessEmail.trim();
+  const mainLinks = site.mainLinks.flatMap<LinkEntry | ContactEntry>((entry) => {
     if (!entry.enabled || !entry.title.trim()) return [];
+    if ("contact" in entry) {
+      return /^[^\s@]+@[^\s@]+$/.test(email) ? [{ ...entry, email }] : [];
+    }
     if ("section" in entry) {
       return sections[entry.section].length ? [{ ...entry, href: `#${entry.section}` }] : [];
     }
     const destination = "social" in entry ? site.socials[entry.social] : entry;
     return hasDestination(destination) ? [{ ...entry, href: destination.href }] : [];
   });
+  const contact = mainLinks.find((entry) => "email" in entry);
   const hasContent = socials.length || mainLinks.length || collaborations.length || discounts.length;
 
   return (
@@ -43,7 +48,7 @@ export default function Home() {
       </main>
       <footer className="footer">
         <p>© {new Date().getFullYear()} {site.profile.name}</p>
-        <SocialLinks links={socials} />
+        <SocialLinks links={socials} contactId={contact?.id} />
       </footer>
     </div>
   );

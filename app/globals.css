@@ -219,7 +219,7 @@ body {
 
 .socials { display: flex; flex-wrap: wrap; gap: 4px; }
 
-.socials a {
+.socials :is(a, button) {
   display: grid;
   width: 44px;
   height: 44px;
@@ -232,10 +232,10 @@ body {
 
 @media (prefers-reduced-motion: no-preference) {
   .profile, .primary-links li { animation: enter 380ms ease-out backwards; }
-  :where(.socials a, .link-card, .action, .link-arrow) {
+  :where(.socials :is(a, button), .link-card, .action, .link-arrow) {
     transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
   }
-  :where(.socials a, .link-card, .action):active { transform: scale(.985); }
+  :where(.socials :is(a, button), .link-card, .action):active { transform: scale(.985); }
   @supports (animation-timeline: view()) {
     .editorial[data-photo] {
       animation: enter linear both;
@@ -251,7 +251,7 @@ body {
 }
 
 @media (hover: hover) {
-  .socials a:hover, .action:hover { background: #e6e7df; }
+  .socials :is(a, button):hover, .action:hover { background: #e6e7df; }
   .link-card:hover { border-color: var(--secondary); }
   .link-card[data-featured]:hover { background: #3a3734; }
   @media (prefers-reduced-motion: no-preference) {
@@ -262,4 +262,46 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+.contact-card {
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--surface);
+  box-shadow: 0 2px 3px rgb(36 35 33 / 4%);
+}
+
+.contact-toggle {
+  width: 100%;
+  min-height: 70px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  text-align: start;
+}
+
+.contact-toggle:hover { background: var(--background); }
+.contact-card[data-expanded="true"] .contact-chevron { transform: rotate(180deg); }
+.contact-panel { display: grid; grid-template-rows: 0fr; opacity: 0; }
+.contact-card[data-expanded="true"] .contact-panel { grid-template-rows: 1fr; opacity: 1; }
+.contact-panel-clip { min-height: 0; overflow: hidden; }
+
+.contact-content {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  margin-inline: 15px;
+  padding: 13px 0 15px;
+  border-top: 1px solid var(--border);
+}
+
+.contact-email { font-size: .9375rem; font-weight: 650; user-select: all; }
+.contact-copy { background: var(--foreground); border-color: var(--foreground); color: var(--surface); cursor: pointer; }
+.contact-copy:hover { background: #3a3734; }
+.contact-copy:focus-visible { outline: 2px solid var(--foreground); outline-offset: 3px; }
+.socials button { cursor: pointer; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-panel { transition: grid-template-rows 220ms ease, opacity 180ms ease; }
 }

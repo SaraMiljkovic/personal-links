@@ -19,6 +19,8 @@ export type LinkEntry = {
   featured?: boolean;
 };
 
+export type ContactEntry = Pick<LinkEntry, "id" | "title" | "description"> & { email: string };
+
 export type Discount = {
   id: string;
   brand: string;
@@ -29,18 +31,20 @@ export type Discount = {
   enabled: boolean;
 };
 
-type SocialName = "instagram" | "tiktok" | "email";
+type SocialName = "instagram" | "tiktok";
 type SectionName = "collaborations" | "discounts";
 
 export type MainLink = Omit<LinkEntry, "href"> & (
   | { href: string }
   | { social: SocialName }
   | { section: SectionName }
+  | { contact: true }
 );
 
 type SiteConfig = {
   profile: Profile;
   seo: { description: string; siteUrl: string };
+  businessEmail: string;
   socials: Record<SocialName, LinkEntry>;
   mainLinks: MainLink[];
   collaborations: LinkEntry[];
@@ -62,14 +66,14 @@ export const site: SiteConfig = {
     description: "Fitness, Pilates, lifestyle, collaborations and more. Explore Sara Miljkovic's links.",
     siteUrl: "", // Optional. Enter the final HTTPS origin to enable the social preview image.
   },
+  businessEmail: "saramiljkovicbiz2@gmail.com",
   socials: {
     instagram: { id: "social-instagram", title: "Instagram", href: "https://www.instagram.com/sara_miljkovicc/", icon: "instagram", enabled: true },
-    tiktok: { id: "social-tiktok", title: "TikTok", href: "", icon: "tiktok", enabled: true },
-    email: { id: "social-email", title: "Business email", href: "mailto:saramiljkovicbiz2@gmail.com?subject=Business%20Inquiry", icon: "email", enabled: true },
+    tiktok: { id: "social-tiktok", title: "TikTok", href: "https://www.tiktok.com/@saritakiii", icon: "tiktok", enabled: true },
   },
   mainLinks: [
     { id: "main-instagram", title: "Instagram", description: "Follow my everyday moments", social: "instagram", icon: "instagram", enabled: true },
-    { id: "main-contact", title: "Business Inquiries", description: "Let's work together", social: "email", icon: "email", enabled: true },
+    { id: "main-contact", title: "Business Inquiries", description: "Let's work together", contact: true, icon: "email", enabled: true },
     {
       id: "prozis-shop",
       title: "Shop My Prozis Favorites",
@@ -95,7 +99,7 @@ export const site: SiteConfig = {
       icon: "discounts",
       enabled: true,
     },
-    { id: "main-tiktok", title: "TikTok", social: "tiktok", icon: "tiktok", enabled: true },
+    { id: "main-tiktok", title: "TikTok", description: "Follow me on TikTok", social: "tiktok", icon: "tiktok", enabled: true },
   ],
   collaborations: [
     // Disabled example. Add a real partnership title and URL before enabling.

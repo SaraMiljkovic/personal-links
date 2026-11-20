@@ -1,5 +1,7 @@
 import { ArrowDownRight, ArrowUpRight, Handshake, Mail, ShoppingBag, Tag } from "lucide-react";
-import type { IconName, LinkEntry } from "@/src/config/site";
+import type { ContactEntry, IconName, LinkEntry } from "@/src/config/site";
+
+import { ContactCard, ContactShortcut } from "./ContactCard";
 
 const icons = { collaborations: Handshake, discounts: Tag, email: Mail, shopping: ShoppingBag };
 
@@ -40,8 +42,8 @@ export function externalAttributes(href: string) {
   return isWebUrl(href) ? { target: "_blank", rel: "noopener noreferrer" } : {};
 }
 
-export function SocialLinks({ links }: { links: LinkEntry[] }) {
-  if (!links.length) return null;
+export function SocialLinks({ links, contactId }: { links: LinkEntry[]; contactId?: string }) {
+  if (!links.length && !contactId) return null;
 
   return (
     <nav className="socials" aria-label="Social and contact links">
@@ -50,27 +52,34 @@ export function SocialLinks({ links }: { links: LinkEntry[] }) {
           <LinkIcon name={icon ?? "email"} />
         </a>
       ))}
+      {contactId && <ContactShortcut contactId={contactId} />}
     </nav>
   );
 }
 
-export function LinksList({ links }: { links: LinkEntry[] }) {
+export function LinksList({ links }: { links: (LinkEntry | ContactEntry)[] }) {
   return (
     <ul className="link-list">
-      {links.map(({ id, href, title, description, icon, featured }, index) => (
-        <li key={id} style={{ animationDelay: `${Math.min(index, 5) * 55}ms` }}>
-          <a className="link-card" data-featured={featured || undefined} href={href} {...externalAttributes(href)}>
-            {icon && <span className="link-icon"><LinkIcon name={icon} /></span>}
-            <span className="link-copy">
-              <span className="link-title">{title}</span>
-              {description && <span className="link-description">{description}</span>}
-            </span>
-            {href.startsWith("#")
-              ? <ArrowDownRight className="link-arrow" size={17} aria-hidden="true" />
-              : <ArrowUpRight className="link-arrow" size={17} aria-hidden="true" />}
-          </a>
+      {links.map((entry, index) => (
+        <li key={entry.id} style={{ animationDelay: `${Math.min(index, 5) * 55}ms` }}>
+          {"email" in entry ? <ContactCard {...entry} /> : <LinkCard {...entry} />}
         </li>
       ))}
     </ul>
+  );
+}
+
+function LinkCard({ href, title, description, icon, featured }: LinkEntry) {
+  return (
+    <a className="link-card" data-featured={featured || undefined} href={href} {...externalAttributes(href)}>
+      {icon && <span className="link-icon"><LinkIcon name={icon} /></span>}
+      <span className="link-copy">
+        <span className="link-title">{title}</span>
+        {description && <span className="link-description">{description}</span>}
+      </span>
+      {href.startsWith("#")
+        ? <ArrowDownRight className="link-arrow" size={17} aria-hidden="true" />
+        : <ArrowUpRight className="link-arrow" size={17} aria-hidden="true" />}
+    </a>
   );
 }
