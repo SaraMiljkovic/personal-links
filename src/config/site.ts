@@ -2,6 +2,7 @@ export type IconName = "collaborations" | "discounts" | "instagram" | "tiktok" |
 
 export type Profile = {
   name: string;
+  displayName: string;
   username: string;
   bio: string;
   tagline: string;
@@ -56,9 +57,10 @@ type SiteConfig = {
 export const site: SiteConfig = {
   profile: {
     name: "Sara Miljkovic",
+    displayName: "saritakiii",
     username: "@sara_miljkovicc",
-    bio: "Fitness · Pilates · Lifestyle",
-    tagline: "Movement, balance & everything in between.",
+    bio: "Fitness · Pilates · STEM · Lifestyle",
+    tagline: "a girl in her 20s trying to figure life out.",
     photoPath: "/images/sara-profile.webp",
     photoPosition: "48% 34%",
   },
